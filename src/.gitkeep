@@ -1,1 +1,32 @@
+Option Explicit
 
+Public Sub Delete_Pictures_In_ColumnD()
+
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+
+    DeletePicturesInColumn ws, 4
+
+    MsgBox "D列の画像を削除しました", vbInformation
+
+End Sub
+
+Public Sub DeletePicturesInColumn(ByVal ws As Worksheet, ByVal colNum As Long)
+
+    Dim i As Long
+
+    Application.ScreenUpdating = False
+
+    For i = ws.Shapes.Count To 1 Step -1
+        On Error Resume Next
+
+        If ws.Shapes(i).TopLeftCell.Column = colNum Then
+            ws.Shapes(i).Delete
+        End If
+
+        On Error GoTo 0
+    Next i
+
+    Application.ScreenUpdating = True
+
+End Sub
