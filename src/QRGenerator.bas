@@ -6,6 +6,12 @@ Public Sub Generate_QR_Codes()
 
 End Sub
 
+Public Sub Clear_QR_Pictures()
+
+    Delete_Pictures_In_ColumnD
+
+End Sub
+
 ' =========================
 ' Settings
 ' =========================
