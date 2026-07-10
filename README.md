@@ -16,7 +16,9 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 
 ## Architecture
 
-![Architecture](images/architecture.svg)
+<p align="center">
+  <img src="images/architecture.svg" width="800" alt="Excel QR Code Generator Architecture">
+</p>
 
 ---
 
@@ -27,6 +29,8 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 ✓ PNG Export
 
 ✓ Worksheet Image Insertion
+
+✓ Button-ready Macro Entry Points
 
 ✓ UTF-8 Encoding
 
@@ -80,35 +84,30 @@ Generate hundreds of QR codes automatically from Excel without creating them one
 
 ## Workflow
 
+```text
 Excel Data
-
-↓
-
+      │
+      ▼
 Text Cleanup
-
-↓
-
+      │
+      ▼
 UTF-8 Encoding
-
-↓
-
+      │
+      ▼
 BOM Removal
-
-↓
-
+      │
+      ▼
 QR Code Generation
-
-↓
-
+      │
+      ▼
 PNG Export
-
-↓
-
+      │
+      ▼
 Worksheet Image Insertion
-
-↓
-
+      │
+      ▼
 Status Output (OK / NG)
+```
 
 ---
 
@@ -121,8 +120,7 @@ excel-qr-code-generator/
 │   └── architecture.svg
 │
 ├── src/
-│   ├── QRGenerator.bas
-│   └── PictureUtility.bas
+│   └── QRGenerator.bas
 │
 ├── LICENSE
 └── README.md
@@ -151,6 +149,7 @@ excel-qr-code-generator/
 ### Excel Automation
 
 - Automatic worksheet image insertion
+- Button-ready macro execution
 - Status tracking
 - Image resizing
 - Cell fitting
@@ -158,13 +157,26 @@ excel-qr-code-generator/
 
 ---
 
+## Future Roadmap
+
+- Configurable output folder
+- QR size customization
+- Progress indicator
+- URL validation
+- Duplicate detection
+- Label printing support
+- SVG export
+- Logo QR generation
+
+---
+
 ## Current Version
 
-v0.1
+**v0.1**
 
-Released: 2026-07-09
+Released: **2026-07-10**
 
-Status: Stable Release
+Status: **Stable Release**
 
 ---
 
