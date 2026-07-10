@@ -1,5 +1,11 @@
 Option Explicit
 
+Public Sub Generate_QR_Codes()
+
+    Export_QR_WithMargin_PNG
+
+End Sub
+
 ' =========================
 ' Settings
 ' =========================
