@@ -51,30 +51,30 @@ Public Sub Export_QR_WithMargin_PNG()
     Application.ScreenUpdating = False
     Application.EnableEvents = False
 
-On Error GoTo FINALLY
-
-    Dim lastRow As Long
-    lastRow = GetLastDataRow(ws)
+    On Error GoTo FINALLY
     
-    If lastRow < START_ROW Then
-        MsgBox "QRコードを生成するデータがありません。", vbInformation
-        GoTo FINALLY
-    End If
-    
-    If lastRow > MAX_ROW Then
-        lastRow = MAX_ROW
-    End If
-    
-    If CLEAN_B_COLUMN_BEFORE_EXPORT Then
-        CleanColumnB ws, START_ROW, lastRow, COL_DATA
-    End If
-    
-    Dim r As Long
-    Dim okCount As Long
-    Dim ngCount As Long
-    Dim skipCount As Long
-    
-    For r = START_ROW To lastRow
+        Dim lastRow As Long
+        lastRow = GetLastDataRow(ws)
+        
+        If lastRow < START_ROW Then
+            MsgBox "QRコードを生成するデータがありません。", vbInformation
+            GoTo FINALLY
+        End If
+        
+        If lastRow > MAX_ROW Then
+            lastRow = MAX_ROW
+        End If
+        
+        If CLEAN_B_COLUMN_BEFORE_EXPORT Then
+            CleanColumnB ws, START_ROW, lastRow, COL_DATA
+        End If
+        
+        Dim r As Long
+        Dim okCount As Long
+        Dim ngCount As Long
+        Dim skipCount As Long
+        
+        For r = START_ROW To lastRow
 
         ws.Cells(r, COL_JUDGE).Value = ""
 
@@ -138,16 +138,14 @@ NextR:
     Next r
 
     MsgBox "QRコード生成が完了しました。" & vbCrLf & _
-           "OK：" & okCount & "件" & vbCrLf & _
-           "NG：" & ngCount & "件" & vbCrLf & _
-           "スキップ：" & skipCount & "件" & vbCrLf & _
-           "保存先：" & pngDir, vbInformation
+       "OK：" & okCount & "件" & vbCrLf & _
+       "NG：" & ngCount & "件" & vbCrLf & _
+       "スキップ：" & skipCount & "件" & vbCrLf & _
+       "保存先：" & pngDir, vbInformation
 
 FINALLY:
     Application.EnableEvents = True
     Application.ScreenUpdating = True
-
-End Sub
 
 Private Function GetLastDataRow(ByVal ws As Worksheet) As Long
 
@@ -389,3 +387,26 @@ Private Function CleanQrText(ByVal v As Variant) As String
     CleanQrText = Trim$(s)
 
 End Function
+
+Public Sub Delete_Pictures_In_ColumnD()
+
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+
+    Dim i As Long
+
+    Application.ScreenUpdating = False
+    On Error GoTo FINALLY
+
+    For i = ws.Shapes.Count To 1 Step -1
+        If ws.Shapes(i).TopLeftCell.Column = 4 Then
+            ws.Shapes(i).Delete
+        End If
+    Next i
+
+    MsgBox "D列の画像を削除しました。", vbInformation
+
+FINALLY:
+    Application.ScreenUpdating = True
+
+End Sub
