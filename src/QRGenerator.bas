@@ -147,6 +147,8 @@ FINALLY:
     Application.EnableEvents = True
     Application.ScreenUpdating = True
 
+End Sub
+
 Private Function GetLastDataRow(ByVal ws As Worksheet) As Long
 
     Dim lastRowNo As Long
