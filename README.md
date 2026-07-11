@@ -26,6 +26,10 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 
 ✓ Batch QR Generation
 
+✓ Dynamic Batch Range Detection
+
+✓ Skip Empty Rows
+
 ✓ PNG Export
 
 ✓ Worksheet Image Insertion
@@ -42,7 +46,7 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 
 ✓ Automatic PNG File Naming
 
-✓ Status Reporting (OK / NG)
+✓ Status Reporting (OK / NG / Skip)
 
 ✓ Re-runnable Workflow
 
@@ -88,6 +92,9 @@ Generate hundreds of QR codes automatically from Excel without creating them one
 Excel Data
       │
       ▼
+Detect Last Data Row
+      │
+      ▼
 Text Cleanup
       │
       ▼
@@ -97,16 +104,17 @@ UTF-8 Encoding
 BOM Removal
       │
       ▼
-QR Code Generation
+Generate QR Code
       │
       ▼
-PNG Export
+Export PNG
       │
       ▼
-Worksheet Image Insertion
+Insert into Worksheet
       │
       ▼
-Status Output (OK / NG)
+Status Output
+ (OK / NG / Skip)
 ```
 
 ---
@@ -133,6 +141,7 @@ excel-qr-code-generator/
 ### QR Generation
 
 - Batch QR code generation
+- Dynamic last-row detection
 - Quiet zone (margin) control
 - PNG image export
 - Automatic sequential file naming
@@ -145,6 +154,7 @@ excel-qr-code-generator/
 - Zero-width character cleanup
 - Line break removal
 - Whitespace normalization
+- Empty row detection
 
 ### Excel Automation
 
@@ -159,14 +169,33 @@ excel-qr-code-generator/
 
 ## Future Roadmap
 
-- Configurable output folder
-- QR size customization
-- Progress indicator
+### v0.2
+
+- Processing progress indicator
+- Elapsed time display
+- Output folder selection
+- Improved error handling
+
+### v0.3
+
+- Configuration worksheet
+- Custom QR size
+- Custom margin
+- Configurable worksheet columns
+
+### v0.4
+
 - URL validation
 - Duplicate detection
+- Validation report
+- Error summary
+
+### v0.5
+
 - Label printing support
 - SVG export
 - Logo QR generation
+- ZIP export
 
 ---
 
@@ -174,7 +203,7 @@ excel-qr-code-generator/
 
 **v0.1**
 
-Released: **2026-07-10**
+Released: **2026-07-11**
 
 Status: **Stable Release**
 
