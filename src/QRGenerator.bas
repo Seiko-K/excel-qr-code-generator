@@ -21,7 +21,7 @@ Const QR_PX As Long = 512
 Const QR_MARGIN As Long = 40
 
 Const START_ROW As Long = 2
-Const END_ROW As Long = 201
+Const MAX_ROW As Long = 201
 
 Const COL_NO As String = "A"
 Const COL_DATA As String = "B"
@@ -51,17 +51,30 @@ Public Sub Export_QR_WithMargin_PNG()
     Application.ScreenUpdating = False
     Application.EnableEvents = False
 
-    On Error GoTo FINALLY
+On Error GoTo FINALLY
 
-    If CLEAN_B_COLUMN_BEFORE_EXPORT Then
-        CleanColumnB ws, START_ROW, END_ROW, COL_DATA
+    Dim lastRow As Long
+    lastRow = GetLastDataRow(ws)
+    
+    If lastRow < START_ROW Then
+        MsgBox "QRコードを生成するデータがありません。", vbInformation
+        GoTo FINALLY
     End If
-
+    
+    If lastRow > MAX_ROW Then
+        lastRow = MAX_ROW
+    End If
+    
+    If CLEAN_B_COLUMN_BEFORE_EXPORT Then
+        CleanColumnB ws, START_ROW, lastRow, COL_DATA
+    End If
+    
     Dim r As Long
     Dim okCount As Long
     Dim ngCount As Long
-
-    For r = START_ROW To END_ROW
+    Dim skipCount As Long
+    
+    For r = START_ROW To lastRow
 
         ws.Cells(r, COL_JUDGE).Value = ""
 
@@ -74,6 +87,12 @@ Public Sub Export_QR_WithMargin_PNG()
 
         Dim payload As String
         payload = CleanQrText(ws.Cells(r, COL_DATA).Value)
+
+        ' A列・B列の両方が空の場合は処理対象外
+        If noVal = "" And payload = "" Then
+            skipCount = skipCount + 1
+            GoTo NextR
+        End If
 
         If noVal = "" Then
             ws.Cells(r, COL_JUDGE).Value = "NG：A列(通し番号)空"
@@ -121,6 +140,7 @@ NextR:
     MsgBox "QRコード生成が完了しました。" & vbCrLf & _
            "OK：" & okCount & "件" & vbCrLf & _
            "NG：" & ngCount & "件" & vbCrLf & _
+           "スキップ：" & skipCount & "件" & vbCrLf & _
            "保存先：" & pngDir, vbInformation
 
 FINALLY:
@@ -128,6 +148,22 @@ FINALLY:
     Application.ScreenUpdating = True
 
 End Sub
+
+Private Function GetLastDataRow(ByVal ws As Worksheet) As Long
+
+    Dim lastRowNo As Long
+    Dim lastRowData As Long
+
+    lastRowNo = ws.Cells(ws.Rows.Count, COL_NO).End(xlUp).Row
+    lastRowData = ws.Cells(ws.Rows.Count, COL_DATA).End(xlUp).Row
+
+    If lastRowNo > lastRowData Then
+        GetLastDataRow = lastRowNo
+    Else
+        GetLastDataRow = lastRowData
+    End If
+
+End Function
 
 Private Function GetBaseFolder() As String
 
