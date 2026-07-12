@@ -73,8 +73,18 @@ Public Sub Export_QR_WithMargin_PNG()
         Dim okCount As Long
         Dim ngCount As Long
         Dim skipCount As Long
+        Dim totalCount As Long
+
+        totalCount = lastRow - START_ROW + 1
         
         For r = START_ROW To lastRow
+
+        Application.StatusBar = _
+            "Generating QR Codes... " & _
+            (r - START_ROW + 1) & _
+            " / " & totalCount
+        
+        DoEvents
 
         ws.Cells(r, COL_JUDGE).Value = ""
 
@@ -144,6 +154,7 @@ NextR:
        "保存先：" & pngDir, vbInformation
 
 FINALLY:
+    Application.StatusBar = False
     Application.EnableEvents = True
     Application.ScreenUpdating = True
 
