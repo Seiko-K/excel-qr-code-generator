@@ -28,6 +28,8 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 
 ✓ Dynamic Batch Range Detection
 
+✓ Progress Indicator
+
 ✓ Skip Empty Rows
 
 ✓ PNG Export
@@ -107,6 +109,9 @@ BOM Removal
 Generate QR Code
       │
       ▼
+Progress Indicator
+      │
+      ▼
 Export PNG
       │
       ▼
@@ -143,6 +148,7 @@ excel-qr-code-generator/
 - Batch QR code generation
 - Dynamic last-row detection
 - Quiet zone (margin) control
+- Real-time processing progress
 - PNG image export
 - Automatic sequential file naming
 - Zero-padded numbering
@@ -160,6 +166,7 @@ excel-qr-code-generator/
 
 - Automatic worksheet image insertion
 - Button-ready macro execution
+- Progress indicator
 - Status tracking
 - Image resizing
 - Cell fitting
@@ -171,10 +178,10 @@ excel-qr-code-generator/
 
 ### v0.2
 
-- Processing progress indicator
 - Elapsed time display
 - Output folder selection
 - Improved error handling
+- Processing log
 
 ### v0.3
 
@@ -203,7 +210,7 @@ excel-qr-code-generator/
 
 **v0.1**
 
-Released: **2026-07-11**
+Released: **2026-07-12**
 
 Status: **Stable Release**
 
