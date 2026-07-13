@@ -39,6 +39,9 @@ Public Sub Export_QR_WithMargin_PNG()
     Dim ws As Worksheet
     Set ws = ActiveSheet
 
+    Dim startTime As Double
+    startTime = Timer
+
     Dim baseFolder As String
     baseFolder = GetBaseFolder()
 
@@ -147,11 +150,19 @@ Public Sub Export_QR_WithMargin_PNG()
 NextR:
     Next r
 
+    Dim elapsedTime As Double
+    elapsedTime = Timer - startTime
+
+    If elapsedTime < 0 Then
+        elapsedTime = elapsedTime + 86400
+    End If
+
     MsgBox "QRコード生成が完了しました。" & vbCrLf & _
-       "OK：" & okCount & "件" & vbCrLf & _
-       "NG：" & ngCount & "件" & vbCrLf & _
-       "スキップ：" & skipCount & "件" & vbCrLf & _
-       "保存先：" & pngDir, vbInformation
+           "OK：" & okCount & "件" & vbCrLf & _
+           "NG：" & ngCount & "件" & vbCrLf & _
+           "スキップ：" & skipCount & "件" & vbCrLf & _
+           "処理時間：" & Format$(elapsedTime, "0.00") & " 秒" & vbCrLf & _
+           "保存先：" & pngDir, vbInformation
 
 FINALLY:
     Application.StatusBar = False
