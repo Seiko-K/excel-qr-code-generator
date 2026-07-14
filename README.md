@@ -30,6 +30,10 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 
 ✓ Progress Indicator
 
+✓ Elapsed Time Display
+
+✓ Configurable Output Folder
+
 ✓ Skip Empty Rows
 
 ✓ PNG Export
@@ -118,6 +122,9 @@ Export PNG
 Insert into Worksheet
       │
       ▼
+Elapsed Time Calculation
+      │
+      ▼
 Status Output
  (OK / NG / Skip)
 ```
@@ -149,6 +156,7 @@ excel-qr-code-generator/
 - Dynamic last-row detection
 - Quiet zone (margin) control
 - Real-time processing progress
+- Elapsed time measurement
 - PNG image export
 - Automatic sequential file naming
 - Zero-padded numbering
@@ -166,6 +174,8 @@ excel-qr-code-generator/
 
 - Automatic worksheet image insertion
 - Button-ready macro execution
+- Configurable output folder
+- Folder picker for PNG export
 - Progress indicator
 - Status tracking
 - Image resizing
@@ -178,10 +188,10 @@ excel-qr-code-generator/
 
 ### v0.2
 
-- Elapsed time display
-- Output folder selection
 - Improved error handling
 - Processing log
+- Batch cancellation
+- Export summary
 
 ### v0.3
 
@@ -210,7 +220,7 @@ excel-qr-code-generator/
 
 **v0.1**
 
-Released: **2026-07-12**
+Released: **2026-07-13**
 
 Status: **Stable Release**
 
