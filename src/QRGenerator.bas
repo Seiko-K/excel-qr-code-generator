@@ -33,6 +33,7 @@ Const ROW_HEIGHT As Double = 150
 Const PAD As Double = 2
 
 Const CLEAN_B_COLUMN_BEFORE_EXPORT As Boolean = True
+Const USE_FOLDER_PICKER As Boolean = True
 
 Public Sub Export_QR_WithMargin_PNG()
 
