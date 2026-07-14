@@ -1,3 +1,10 @@
+'=================================================
+' Excel QR Code Generator
+' Version : v0.1
+' Author  : Seiko Atsuumi
+' License : MIT
+'=================================================
+
 Option Explicit
 
 Public Sub Generate_QR_Codes()
