@@ -42,9 +42,19 @@ Public Sub Export_QR_WithMargin_PNG()
 
     Dim startTime As Double
     startTime = Timer
-
-    Dim baseFolder As String
-    baseFolder = GetBaseFolder()
+    
+        Dim baseFolder As String
+    
+    If USE_FOLDER_PICKER Then
+        baseFolder = SelectOutputFolder()
+    
+        If baseFolder = "" Then
+            MsgBox "保存先の選択がキャンセルされました。", vbInformation
+            GoTo FINALLY
+        End If
+    Else
+        baseFolder = GetBaseFolder()
+    End If
 
     Dim pngDir As String
     pngDir = baseFolder & "\" & FOLDER_PNG
@@ -185,6 +195,24 @@ Private Function GetLastDataRow(ByVal ws As Worksheet) As Long
     Else
         GetLastDataRow = lastRowData
     End If
+
+End Function
+
+Private Function SelectOutputFolder() As String
+
+    Dim dialog As FileDialog
+    Set dialog = Application.FileDialog(msoFileDialogFolderPicker)
+
+    With dialog
+        .Title = "QRコード画像の保存先を選択してください"
+        .AllowMultiSelect = False
+
+        If .Show = -1 Then
+            SelectOutputFolder = .SelectedItems(1)
+        Else
+            SelectOutputFolder = ""
+        End If
+    End With
 
 End Function
 
