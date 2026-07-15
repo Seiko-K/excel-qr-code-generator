@@ -175,6 +175,14 @@ NextR:
         elapsedTime = elapsedTime + 86400
     End If
 
+    WriteProcessingLog _
+        ThisWorkbook, _
+        okCount, _
+        ngCount, _
+        skipCount, _
+        elapsedTime, _
+        pngDir
+
     MsgBox "QRコード生成が完了しました。" & vbCrLf & _
            "OK：" & okCount & "件" & vbCrLf & _
            "NG：" & ngCount & "件" & vbCrLf & _
