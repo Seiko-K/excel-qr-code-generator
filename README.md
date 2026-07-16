@@ -10,7 +10,7 @@ Reusable Excel VBA toolkit for batch QR code generation.
 
 Built for situations where many QR codes need to be created efficiently from Excel data.
 
-Generate hundreds of QR codes at once, export them as PNG files, and optionally insert them directly into Excel worksheets.
+Generate hundreds of QR codes at once, export them as PNG files, optionally insert them into Excel worksheets, and automatically record processing history.
 
 ---
 
@@ -31,6 +31,10 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 ✓ Progress Indicator
 
 ✓ Elapsed Time Display
+
+✓ Processing Log
+
+✓ Automatic Log Worksheet Creation
 
 ✓ Configurable Output Folder
 
@@ -88,7 +92,7 @@ Generate hundreds of QR codes at once, export them as PNG files, and optionally 
 
 ### Batch Processing
 
-Generate hundreds of QR codes automatically from Excel without creating them one by one.
+Generate hundreds of QR codes automatically from Excel without creating them one by one while keeping an execution history.
 
 ---
 
@@ -120,6 +124,9 @@ Export PNG
       │
       ▼
 Insert into Worksheet
+      │
+      ▼
+Write Processing Log
       │
       ▼
 Elapsed Time Calculation
@@ -176,6 +183,8 @@ excel-qr-code-generator/
 - Button-ready macro execution
 - Configurable output folder
 - Folder picker for PNG export
+- Automatic processing log
+- Automatic Log worksheet creation
 - Progress indicator
 - Status tracking
 - Image resizing
@@ -189,9 +198,9 @@ excel-qr-code-generator/
 ### v0.2
 
 - Improved error handling
-- Processing log
 - Batch cancellation
 - Export summary
+- CSV processing report
 
 ### v0.3
 
@@ -220,7 +229,7 @@ excel-qr-code-generator/
 
 **v0.1**
 
-Released: **2026-07-13**
+Released: **2026-07-14**
 
 Status: **Stable Release**
 
