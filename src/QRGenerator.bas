@@ -486,6 +486,35 @@ Private Sub WriteProcessingLog( _
 
 End Sub
 
+Private Function GetOrCreateLogSheet(ByVal wb As Workbook) As Worksheet
+
+    Dim logWs As Worksheet
+
+    On Error Resume Next
+    Set logWs = wb.Worksheets("Log")
+    On Error GoTo 0
+
+    If logWs Is Nothing Then
+        Set logWs = wb.Worksheets.Add(After:=wb.Worksheets(wb.Worksheets.Count))
+        logWs.Name = "Log"
+
+        With logWs
+            .Cells(1, 1).Value = "Executed At"
+            .Cells(1, 2).Value = "OK Count"
+            .Cells(1, 3).Value = "NG Count"
+            .Cells(1, 4).Value = "Skip Count"
+            .Cells(1, 5).Value = "Elapsed Time (sec)"
+            .Cells(1, 6).Value = "Output Folder"
+
+            .Rows(1).Font.Bold = True
+            .Columns("A:F").AutoFit
+        End With
+    End If
+
+    Set GetOrCreateLogSheet = logWs
+
+End Function
+
 Public Sub Delete_Pictures_In_ColumnD()
 
     Dim ws As Worksheet
