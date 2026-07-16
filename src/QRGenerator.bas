@@ -456,6 +456,36 @@ Private Function CleanQrText(ByVal v As Variant) As String
 
 End Function
 
+Private Sub WriteProcessingLog( _
+    ByVal wb As Workbook, _
+    ByVal okCount As Long, _
+    ByVal ngCount As Long, _
+    ByVal skipCount As Long, _
+    ByVal elapsedTime As Double, _
+    ByVal outputFolder As String)
+
+    Dim logWs As Worksheet
+    Set logWs = GetOrCreateLogSheet(wb)
+
+    Dim nextRow As Long
+    nextRow = logWs.Cells(logWs.Rows.Count, 1).End(xlUp).Row + 1
+
+    If nextRow < 2 Then
+        nextRow = 2
+    End If
+
+    logWs.Cells(nextRow, 1).Value = Now
+    logWs.Cells(nextRow, 2).Value = okCount
+    logWs.Cells(nextRow, 3).Value = ngCount
+    logWs.Cells(nextRow, 4).Value = skipCount
+    logWs.Cells(nextRow, 5).Value = elapsedTime
+    logWs.Cells(nextRow, 6).Value = outputFolder
+
+    logWs.Cells(nextRow, 1).NumberFormat = "yyyy/mm/dd hh:mm:ss"
+    logWs.Cells(nextRow, 5).NumberFormat = "0.00"
+
+End Sub
+
 Public Sub Delete_Pictures_In_ColumnD()
 
     Dim ws As Worksheet
