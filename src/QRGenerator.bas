@@ -726,6 +726,13 @@ Private Sub WriteProcessingLog( _
     logWs.Cells(nextRow, 1).NumberFormat = "yyyy/mm/dd hh:mm:ss"
     logWs.Cells(nextRow, 5).NumberFormat = "0.00"
 
+    ' Add borders to the newly written log row.
+    ' 新しく追加したログ行に罫線を設定します。
+    With logWs.Range("A" & nextRow & ":F" & nextRow).Borders
+        .LineStyle = xlContinuous
+        .Weight = xlThin
+    End With
+
 End Sub
 
 ' Returns the existing Log worksheet or creates it when missing.
@@ -746,6 +753,9 @@ Private Function GetOrCreateLogSheet(ByVal wb As Workbook) As Worksheet
         logWs.Name = "Log"
 
         With logWs
+
+            ' Create the Log worksheet headers.
+            ' Logシートのヘッダーを作成します。
             .Cells(1, 1).Value = "Executed At"
             .Cells(1, 2).Value = "OK Count"
             .Cells(1, 3).Value = "NG Count"
@@ -753,8 +763,27 @@ Private Function GetOrCreateLogSheet(ByVal wb As Workbook) As Worksheet
             .Cells(1, 5).Value = "Elapsed Time (sec)"
             .Cells(1, 6).Value = "Output Folder"
 
-            .Rows(1).Font.Bold = True
-            .Columns("A:F").AutoFit
+            ' Format the header row for readability.
+            ' 見やすくするため、ヘッダー行の書式を設定します。
+            With .Range("A1:F1")
+                .Font.Bold = True
+                .Interior.Color = RGB(68, 114, 196)
+                .Font.Color = RGB(255, 255, 255)
+                .HorizontalAlignment = xlCenter
+                .VerticalAlignment = xlCenter
+            End With
+
+            ' Add filter buttons to the header row.
+            ' ヘッダー行にフィルターボタンを追加します。
+            .Range("A1:F1").AutoFilter
+
+            ' Set practical column widths for the processing log.
+            ' 処理ログを見やすくするため、各列の幅を固定します。
+            .Columns("A").ColumnWidth = 22
+            .Columns("B:D").ColumnWidth = 10
+            .Columns("E").ColumnWidth = 18
+            .Columns("F").ColumnWidth = 45
+
         End With
 
     End If
