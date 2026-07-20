@@ -25,27 +25,6 @@ Attribute VB_Name = "QRGenerator"
 Option Explicit
 
 '=============================================================
-' Public Entry Points
-' ボタン・外部呼び出し用エントリーポイント
-'=============================================================
-
-' Starts the batch QR code generation workflow.
-' QRコードの一括生成処理を開始します。
-Public Sub Generate_QR_Codes()
-
-    Export_QR_WithMargin_PNG
-
-End Sub
-
-' Deletes QR code images inserted in column D.
-' D列に挿入されたQRコード画像を削除します。
-Public Sub Clear_QR_Pictures()
-
-    Delete_Pictures_In_ColumnD
-
-End Sub
-
-'=============================================================
 ' Configuration
 ' 設定
 '=============================================================
@@ -105,6 +84,27 @@ Private Const CLEAN_B_COLUMN_BEFORE_EXPORT As Boolean = True
 ' Controls whether the user selects the output folder.
 ' ユーザーに保存先フォルダを選択させるかを制御します。
 Private Const USE_FOLDER_PICKER As Boolean = True
+
+'=============================================================
+' Public Entry Points
+' ボタン・外部呼び出し用エントリーポイント
+'=============================================================
+
+' Starts the batch QR code generation workflow.
+' QRコードの一括生成処理を開始します。
+Public Sub Generate_QR_Codes()
+
+    Export_QR_WithMargin_PNG
+
+End Sub
+
+' Deletes QR code images inserted in column D.
+' D列に挿入されたQRコード画像を削除します。
+Public Sub Clear_QR_Pictures()
+
+    Delete_Pictures_In_ColumnD
+
+End Sub
 
 '=============================================================
 ' Main Workflow
@@ -707,28 +707,47 @@ Private Sub WriteProcessingLog( _
 
     Dim logWs As Worksheet
     Dim nextRow As Long
+    Dim processedCount As Long
+    Dim successRate As Double
+
+    ' Calculate the success rate from completed processing results.
+    ' 処理済みデータの結果から成功率を計算します。
+    processedCount = okCount + ngCount
+    successRate = 0
+
+    If processedCount > 0 Then
+        successRate = okCount / processedCount
+    End If
 
     Set logWs = GetOrCreateLogSheet(wb)
 
+    ' Find the next available row in the Log worksheet.
+    ' Logシート内の次の空き行を取得します。
     nextRow = logWs.Cells(logWs.Rows.Count, 1).End(xlUp).Row + 1
 
     If nextRow < 2 Then
         nextRow = 2
     End If
 
+    ' Write the processing result to the Log worksheet.
+    ' 処理結果をLogシートへ記録します。
     logWs.Cells(nextRow, 1).Value = Now
     logWs.Cells(nextRow, 2).Value = okCount
     logWs.Cells(nextRow, 3).Value = ngCount
     logWs.Cells(nextRow, 4).Value = skipCount
-    logWs.Cells(nextRow, 5).Value = elapsedTime
-    logWs.Cells(nextRow, 6).Value = outputFolder
+    logWs.Cells(nextRow, 5).Value = successRate
+    logWs.Cells(nextRow, 6).Value = elapsedTime
+    logWs.Cells(nextRow, 7).Value = outputFolder
 
+    ' Apply display formats to date, percentage, and elapsed time.
+    ' 日時、成功率、経過時間の表示形式を設定します。
     logWs.Cells(nextRow, 1).NumberFormat = "yyyy/mm/dd hh:mm:ss"
-    logWs.Cells(nextRow, 5).NumberFormat = "0.00"
+    logWs.Cells(nextRow, 5).NumberFormat = "0.0%"
+    logWs.Cells(nextRow, 6).NumberFormat = "0.00"
 
     ' Add borders to the newly written log row.
     ' 新しく追加したログ行に罫線を設定します。
-    With logWs.Range("A" & nextRow & ":F" & nextRow).Borders
+    With logWs.Range("A" & nextRow & ":G" & nextRow).Borders
         .LineStyle = xlContinuous
         .Weight = xlThin
     End With
@@ -760,12 +779,13 @@ Private Function GetOrCreateLogSheet(ByVal wb As Workbook) As Worksheet
             .Cells(1, 2).Value = "OK Count"
             .Cells(1, 3).Value = "NG Count"
             .Cells(1, 4).Value = "Skip Count"
-            .Cells(1, 5).Value = "Elapsed Time (sec)"
-            .Cells(1, 6).Value = "Output Folder"
+            .Cells(1, 5).Value = "Success Rate"
+            .Cells(1, 6).Value = "Elapsed Time (sec)"
+            .Cells(1, 7).Value = "Output Folder"
 
             ' Format the header row for readability.
             ' 見やすくするため、ヘッダー行の書式を設定します。
-            With .Range("A1:F1")
+            With .Range("A1:G1")
                 .Font.Bold = True
                 .Interior.Color = RGB(68, 114, 196)
                 .Font.Color = RGB(255, 255, 255)
@@ -775,14 +795,15 @@ Private Function GetOrCreateLogSheet(ByVal wb As Workbook) As Worksheet
 
             ' Add filter buttons to the header row.
             ' ヘッダー行にフィルターボタンを追加します。
-            .Range("A1:F1").AutoFilter
+            .Range("A1:G1").AutoFilter
 
             ' Set practical column widths for the processing log.
             ' 処理ログを見やすくするため、各列の幅を固定します。
             .Columns("A").ColumnWidth = 22
             .Columns("B:D").ColumnWidth = 10
-            .Columns("E").ColumnWidth = 18
-            .Columns("F").ColumnWidth = 45
+            .Columns("E").ColumnWidth = 13
+            .Columns("F").ColumnWidth = 18
+            .Columns("G").ColumnWidth = 45
 
         End With
 
