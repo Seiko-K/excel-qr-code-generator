@@ -156,7 +156,7 @@ Public Sub Export_QR_WithMargin_PNG()
         baseFolder = GetBaseFolder()
     End If
 
-    pngDir = baseFolder & "\" & FOLDER_PNG
+    pngDir = CombinePath(baseFolder, FOLDER_PNG)
 
     ' Ensure the required output folders exist before processing.
     ' 処理開始前に必要な出力フォルダが存在することを確認します。
@@ -246,7 +246,7 @@ Public Sub Export_QR_WithMargin_PNG()
         ' Convert the sequential number to a zero-padded file name.
         ' 通し番号を3桁のゼロ埋めファイル名へ変換します。
         fileBase = ZeroPad3(noVal)
-        savePath = pngDir & "\" & fileBase & ".png"
+        savePath = CombinePath(pngDir, fileBase & ".png")
 
         ' Build the QR generation API URL with UTF-8 encoded data.
         ' UTF-8でエンコードしたデータを使い、QR生成APIのURLを組み立てます。
@@ -377,13 +377,43 @@ Private Function SelectOutputFolder() As String
 End Function
 
 ' Returns the default output folder when the folder picker is disabled.
+' Uses the workbook folder when available and falls back to the user's
+' Pictures folder on Windows or home folder on macOS.
+'
 ' フォルダ選択を使用しない場合の既定保存先を返します。
+' ブックの保存先がある場合はその配下を使用し、保存先がない場合は
+' WindowsではPictures、macOSではホームフォルダ配下を使用します。
 Private Function GetBaseFolder() As String
 
+    Dim userHome As String
+
+    ' Prefer an output folder next to the workbook.
+    ' ブックが保存済みの場合は、ブックと同じ場所のoutputを使用します。
     If ThisWorkbook.Path <> "" Then
-        GetBaseFolder = ThisWorkbook.Path & "\output"
+        GetBaseFolder = CombinePath(ThisWorkbook.Path, "output")
+        Exit Function
+    End If
+
+    ' Use the appropriate environment variable for each platform.
+    ' OSに応じた環境変数からユーザーのホームフォルダを取得します。
+    If IsMacExcel() Then
+        userHome = Environ$("HOME")
+
+        If userHome <> "" Then
+            GetBaseFolder = CombinePath(userHome, "QR Code Generator")
+        Else
+            GetBaseFolder = ""
+        End If
     Else
-        GetBaseFolder = Environ$("USERPROFILE") & "\Pictures\QRコード生成"
+        userHome = Environ$("USERPROFILE")
+
+        If userHome <> "" Then
+            GetBaseFolder = CombinePath( _
+                CombinePath(userHome, "Pictures"), _
+                "QR Code Generator")
+        Else
+            GetBaseFolder = ""
+        End If
     End If
 
 End Function
