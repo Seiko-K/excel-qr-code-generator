@@ -255,7 +255,7 @@ Public Sub Export_QR_WithMargin_PNG()
         ' Download the generated QR image as a PNG file.
         ' 生成されたQR画像をPNGファイルとしてダウンロードします。
         errMsg = ""
-        ok = HttpDownloadBinary(urlPng, savePath, errMsg)
+        ok = DownloadBinary(urlPng, savePath, errMsg)
 
         If ok Then
             ws.Cells(r, COL_JUDGE).Value = "OK"
@@ -455,49 +455,6 @@ Private Function BuildQrServerUrl( _
     End If
 
     BuildQrServerUrl = url
-
-End Function
-
-' Downloads binary HTTP content and saves it to the specified file.
-' HTTPからバイナリデータを取得し、指定されたファイルへ保存します。
-Private Function HttpDownloadBinary( _
-    ByVal url As String, _
-    ByVal savePath As String, _
-    ByRef errMsg As String) As Boolean
-
-    On Error GoTo EH
-
-    Dim http As Object
-    Dim stm As Object
-
-    Set http = CreateObject("MSXML2.XMLHTTP")
-
-    http.Open "GET", url, False
-    http.setRequestHeader "User-Agent", "ExcelVBA"
-    http.send
-
-    ' Stop when the QR generation service returns a non-success status.
-    ' QR生成サービスが正常以外のステータスを返した場合は終了します。
-    If http.Status <> 200 Then
-        errMsg = "HTTP " & http.Status & "（PNG取得失敗）"
-        HttpDownloadBinary = False
-        Exit Function
-    End If
-
-    Set stm = CreateObject("ADODB.Stream")
-
-    stm.Type = 1
-    stm.Open
-    stm.Write http.responseBody
-    stm.SaveToFile savePath, 2
-    stm.Close
-
-    HttpDownloadBinary = True
-    Exit Function
-
-EH:
-    errMsg = "PNG保存エラー：" & Err.Description
-    HttpDownloadBinary = False
 
 End Function
 
